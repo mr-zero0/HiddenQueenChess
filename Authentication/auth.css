@@ -1,14 +1,11 @@
 /* General Body Styles */
 body {
-    background: linear-gradient(
-        rgba(0, 0, 0, 0.7), 
-        rgba(0, 0, 0, 0.7)
-    ), url('https://images.unsplash.com/photo-1598427556542-e36e6e3d023b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwyMDUxMDJ8MHwxfGFsbHwxfHx8fHx8fHwxNjcyMTQyMjAx&ixlib=rb-1.2.1&q=80&w=1920') no-repeat center center fixed;
-    background-size: cover;
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
     font-family: 'Roboto', sans-serif;
     color: #fff;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 /* Container Styles */
@@ -18,40 +15,51 @@ body {
     justify-content: center;
     min-height: 100vh;
     position: relative;
-}
-
-/* Card Styles */
-.card {
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 1.25rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
-    max-width: 400px;
-    position: relative;
-    z-index: 1;
 }
 
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 35px rgba(0, 0, 0, 0.5);
+/* Card Container Styles */
+.card-container {
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    height: 450px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    transition: transform 0.8s;
+}
+
+.card-container .login-card, .card-container .signup-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    transition: opacity 0.8s;
+}
+
+.card-container .login-card {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+}
+
+.card-container .signup-card {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
 }
 
 /* Card Body Styles */
 .card-body {
-    padding: 2rem;
-    background: #f4f4f4;
-    border-radius: 1.25rem;
-    position: relative;
-    z-index: 1;
+    width: 100%;
+    max-width: 400px;
 }
 
 /* Card Title Styles */
 .card-title {
     font-size: 2.5rem;
-    color: #333;
+    color: #fff;
     margin-bottom: 1.5rem;
     font-weight: 700;
     text-align: center;
@@ -61,28 +69,35 @@ body {
 /* Form Label Styles */
 .form-label {
     font-weight: 500;
-    color: #555;
+    color: #fff;
 }
 
 /* Input Styles */
 .animated-input {
     border-radius: 0.5rem;
     padding: 0.75rem;
-    border: 1px solid #ddd;
-    background: #fff;
+    border: none;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
     transition: all 0.3s ease;
 }
 
+.animated-input::placeholder {
+    color: rgba(162, 172, 170, 0.7); /* Change this color to your desired placeholder color */
+    opacity: 1; /* Ensures the placeholder color is solid */
+}
+
 .animated-input:focus {
-    border-color: #333;
-    box-shadow: 0 0 0 0.25rem rgba(51, 51, 51, 0.2);
+    border-color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.2);
     outline: none;
 }
 
 /* Button Styles */
 .animated-button {
     border-radius: 0.5rem;
-    background: linear-gradient(135deg, #8e735b, #6c4f3d);
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
     border: none;
     color: white;
     padding: 0.75rem;
@@ -93,43 +108,50 @@ body {
 }
 
 .animated-button:hover {
-    background: linear-gradient(135deg, #6c4f3d, #8e735b);
+    background: linear-gradient(135deg, #feb47b, #ff7e5f);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Input Group Styles */
-.input-group-text {
-    background: #d3b9a4;
-    border: 1px solid #8e735b;
-    border-radius: 0.5rem;
-}
-
-.input-group-text i {
-    color: #4b2e1d;
 }
 
 /* Link Styles */
 .link-primary {
-    color: #574a04;
+    color: #ffd700;
     text-decoration: none;
 }
 
 .link-primary:hover {
     text-decoration: underline;
-    color: #463804;
+    color: #ffcc00;
 }
 
-/* Chessboard Background Overlay */
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://images.unsplash.com/photo-1600703703779-4de4735f5274?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwyMDUxMDJ8MHwxfGFsbHwxfHx8fHx8fHwxNjcyMTQyMzg1&ixlib=rb-1.2.1&q=80&w=1920') repeat;
-    opacity: 0.1;
-    z-index: 0;
+/* Slide Effect */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+.show-login {
+    transform: translateX(0);
+}
+
+.show-signup {
+    transform: translateX(-50%);
 }
 
 /* Animation Keyframes */

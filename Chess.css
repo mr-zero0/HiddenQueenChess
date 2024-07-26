@@ -802,13 +802,13 @@ hr{
     transform: translate(1042%, -1069%) scale(1.2);
 }
 
-.flipper{
+/* .flipper{
     -webkit-animation-name: spin;
     -webkit-animation-duration: 200ms;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-in-out;
     -webkit-animation-fill-mode: forwards;
-}
+} */
 
 @keyframes spin {
     100% {
@@ -911,13 +911,13 @@ hr{
                 inset -1px 0 5px #AAA;
 }
 
-.win{
+/* .win{
     -webkit-animation-name: win;
     -webkit-animation-duration: 500ms;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-in-out;
     -webkit-animation-fill-mode: forwards;
-}
+} */
 
 @keyframes win {
     100% {
@@ -2375,13 +2375,13 @@ hr{
                     inset -1px 0 5px #AAA;
     }
 
-    .win{
+    /* .win{
         -webkit-animation-name: win;
         -webkit-animation-duration: 500ms;
         -webkit-animation-iteration-count: 1;
         -webkit-animation-timing-function: ease-in-out;
         -webkit-animation-fill-mode: forwards;
-    }
+    } */
 
     @keyframes win {
         100% {

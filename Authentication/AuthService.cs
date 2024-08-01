@@ -1,18 +1,20 @@
-using System.Threading.Tasks;
-
 public class AuthService
 {
-    public async Task<bool> ValidateUserAsync(string username, string password)
+    private readonly Dictionary<string, string> _users = new();
+
+    public bool Login(string username, string password)
     {
-        // Implement your user validation logic here.
-        // This is a placeholder for demonstration.
-        return await Task.FromResult(username == "test" && password == "password");
+        return _users.TryGetValue(username, out var storedPassword) && storedPassword == password;
     }
 
-    public async Task<bool> RegisterUserAsync(string username, string password)
+    public bool Signup(string username, string password)
     {
-        // Implement your user registration logic here.
-        // This is a placeholder for demonstration.
-        return await Task.FromResult(true);
+        if (_users.ContainsKey(username))
+        {
+            return false;
+        }
+
+        _users[username] = password;
+        return true;
     }
 }

@@ -20,3 +20,7 @@ document.getElementById('signupForm').addEventListener('submit', async function(
         alert('Signup failed: ' + result.message);
     }
 });
+
+document.getElementById('homeButton').addEventListener('click', function() {
+    window.location.href = '../Home/home.html';
+});

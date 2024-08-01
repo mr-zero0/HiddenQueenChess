@@ -14,8 +14,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
     const result = await response.json();
     if (result.success) {
+        localStorage.setItem('isLoggedIn', 'true');
         window.location.href = '../GUI/Chess.html'; // Redirect to GUI
     } else {
         alert('Login failed: ' + result.message);
     }
+});
+
+document.getElementById('homeButton').addEventListener('click', function() {
+    window.location.href = '../Home/home.html';
 });

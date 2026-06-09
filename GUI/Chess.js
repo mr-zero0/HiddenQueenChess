@@ -33,6 +33,13 @@ let has_black_started = false
 
 let timer = null
 
+// Hidden Queen Variables
+let white_hidden_queen_pawn = null  // e.g., 'white-pawn-1'
+let black_hidden_queen_pawn = null  // e.g., 'black-pawn-5'
+let white_hidden_queen_selected = false
+let black_hidden_queen_selected = false
+let game_started = false
+
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
 const files = Object.freeze({
@@ -96,7 +103,67 @@ window.onload = () => {
     if (preffered_piece_style) {
         changePieceStyle(preffered_piece_style)
     }
-    disable()
+    showHiddenQueenSelection()
+}
+
+function showHiddenQueenSelection() {
+    const modal = document.getElementById('hidden-queen-modal')
+    const container = document.getElementById('pawn-selection-container')
+    container.innerHTML = ''
+    
+    // Create pawn selection buttons for white pawns
+    for (let i = 1; i <= 8; i++) {
+        const pawnId = `white-pawn-${i}`
+        const pawn = document.getElementById(pawnId)
+        if (pawn) {
+            const button = document.createElement('div')
+            button.className = 'pawn-button'
+            button.onclick = () => selectHiddenQueen(pawnId)
+            button.innerHTML = pawn.outerHTML
+            button.id = `button-${pawnId}`
+            container.appendChild(button)
+        }
+    }
+    
+    modal.classList.remove('hidden')
+}
+
+function selectHiddenQueen(pawnId) {
+    white_hidden_queen_pawn = pawnId
+    white_hidden_queen_selected = true
+    
+    // Update UI - show selected pawn
+    const buttons = document.querySelectorAll('.pawn-button')
+    buttons.forEach(btn => btn.classList.remove('selected'))
+    document.getElementById(`button-${pawnId}`).classList.add('selected')
+    
+    // Auto-select random pawn for black (computer)
+    const blackPawns = ['black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 
+                        'black-pawn-5', 'black-pawn-6', 'black-pawn-7', 'black-pawn-8']
+    const randomIndex = Math.floor(Math.random() * blackPawns.length)
+    black_hidden_queen_pawn = blackPawns[randomIndex]
+    black_hidden_queen_selected = true
+    
+    // Close modal and start game
+    setTimeout(() => {
+        document.getElementById('hidden-queen-modal').classList.add('hidden')
+        game_started = true
+        disable()
+    }, 300)
+}
+
+function autoSelectHiddenQueen() {
+    const whitePawns = ['white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 
+                        'white-pawn-5', 'white-pawn-6', 'white-pawn-7', 'white-pawn-8']
+    const randomIndex = Math.floor(Math.random() * whitePawns.length)
+    selectHiddenQueen(whitePawns[randomIndex])
+}
+
+function isHiddenQueen(pieceName) {
+    if (pieceName === white_hidden_queen_pawn || pieceName === black_hidden_queen_pawn) {
+        return true
+    }
+    return false
 }
 
 window.addEventListener('contextmenu', e => {
@@ -279,7 +346,15 @@ rematch.addEventListener('click', e => {
     progress_bars.forEach(e => {
         e.style.width = '100%'
     })
-    disable()
+    
+    // Reset hidden queens for new game
+    white_hidden_queen_pawn = null
+    black_hidden_queen_pawn = null
+    white_hidden_queen_selected = false
+    black_hidden_queen_selected = false
+    game_started = false
+    
+    showHiddenQueenSelection()
 })
 
 
@@ -1108,6 +1183,12 @@ function pawn(id) {
     let offsets = []
     let position = [ranks[parent.id[1]], files[parent.id[0]]]
     let possible = []
+    
+    // Check if this is a hidden queen pawn - if so, use queen movements
+    if (isHiddenQueen(id)) {
+        return queen(id)
+    }
+    
     if (child.id.startsWith('white')) {
         let up = parent.id[0] + ranks_rev[ranks[parent.id[1]] - 1]
         if (!(document.getElementById(up).firstElementChild)) {

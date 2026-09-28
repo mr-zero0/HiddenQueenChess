@@ -277,7 +277,8 @@ class GameApp:
         if self.selected_sq:
             matching_moves = [m for m in self.legal_moves_for_selected if m.to_sq == (r, c)]
             if matching_moves:
-                if any(m.promotion_choice for m in matching_moves):
+                # Multiple promotion choices exist for normal pawns (Queen, Rook, Bishop, Knight)
+                if len(matching_moves) > 1 and any(m.promotion_choice for m in matching_moves):
                     self.pending_promotion_moves = matching_moves
                     self.state = 'SELECT_PROMOTION'
                     return

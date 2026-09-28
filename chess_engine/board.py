@@ -402,10 +402,9 @@ class Board:
                         if piece.is_hidden_queen and not piece.is_revealed:
                             reveals = not self.is_valid_normal_pawn_move(piece, (r, c), (nr, nc), None, False)
 
-                        # If reaching promotion rank as pawn
+                        # If reaching promotion rank as hidden queen, only queen is allowed
                         if piece.is_hidden_queen and nr == promo_rank:
-                            for promo in ['queen', 'rook', 'bishop', 'knight']:
-                                moves.append(Move((r, c), (nr, nc), piece, reveals_hidden_queen=reveals, promotion_choice=promo))
+                            moves.append(Move((r, c), (nr, nc), piece, reveals_hidden_queen=True, promotion_choice='queen'))
                         else:
                             moves.append(Move((r, c), (nr, nc), piece, reveals_hidden_queen=reveals))
                     else:
@@ -414,10 +413,10 @@ class Board:
                             if piece.is_hidden_queen and not piece.is_revealed:
                                 reveals = not self.is_valid_normal_pawn_move(piece, (r, c), (nr, nc), target, False)
 
+                            # If reaching promotion rank as hidden queen, only queen is allowed
                             if piece.is_hidden_queen and nr == promo_rank:
-                                for promo in ['queen', 'rook', 'bishop', 'knight']:
-                                    moves.append(Move((r, c), (nr, nc), piece, captured_piece=target,
-                                                      reveals_hidden_queen=reveals, promotion_choice=promo))
+                                moves.append(Move((r, c), (nr, nc), piece, captured_piece=target,
+                                                  reveals_hidden_queen=True, promotion_choice='queen'))
                             else:
                                 moves.append(Move((r, c), (nr, nc), piece, captured_piece=target, reveals_hidden_queen=reveals))
                         break

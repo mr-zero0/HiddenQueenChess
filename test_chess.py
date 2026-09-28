@@ -274,3 +274,29 @@ def test_stockfish_difficulty_levels():
         assert move is not None
         assert move.piece.color == 'black'
 
+
+def test_hidden_queen_vs_normal_pawn_promotion():
+    board = Board()
+    board.grid = [[None for _ in range(8)] for _ in range(8)]
+    board.grid[0][4] = Piece('black', 'king', 'black-king')
+    board.grid[7][4] = Piece('white', 'king', 'white-king')
+
+    # 1. Normal white pawn on a7
+    normal_pawn = Piece('white', 'pawn', 'white-pawn-1')
+    board.grid[1][0] = normal_pawn  # a7
+    normal_moves = [m for m in board.get_legal_moves('white') if m.from_sq == (1, 0) and m.to_sq == (0, 0)]
+    # Normal pawn must have 4 promotion options: Queen, Rook, Bishop, Knight
+    assert len(normal_moves) == 4
+    promos = {m.promotion_choice for m in normal_moves}
+    assert promos == {'queen', 'rook', 'bishop', 'knight'}
+
+    # 2. Hidden Queen on h7
+    hq_pawn = Piece('white', 'pawn', 'white-pawn-8', is_hidden_queen=True)
+    board.grid[1][7] = hq_pawn  # h7
+    hq_moves = [m for m in board.get_legal_moves('white') if m.from_sq == (1, 7) and m.to_sq == (0, 7)]
+    # Hidden queen MUST ONLY be able to promote to a Queen!
+    assert len(hq_moves) == 1
+    assert hq_moves[0].promotion_choice == 'queen'
+    assert hq_moves[0].reveals_hidden_queen is True
+
+
